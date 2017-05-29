@@ -200,6 +200,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public List<Artist> SearchForNewArtist(string title)
         {
+            // Discogs attempt:
+            // First query for artist
+            // https://api.discogs.com/database/search?q=taking back sunday&type=artist&token=VHuwcMaSdSaUhgNUuQWHOKlXjYTHjwhIZCJEnvRl
+            // Return all artists back to user
+            // Allow user to expand the artist they want
+            // On Expand, query for albums from artistId
+            // https://api.discogs.com/artists/252165/releases?sort=year&token=VHuwcMaSdSaUhgNUuQWHOKlXjYTHjwhIZCJEnvRl
+            // Remove all non-valid "release" or albums aka Viynl, Smplr, Promo. Maybe only take master releases. 
+            // Then allow a user to add a single album or have a button that loops through all albums and adds. 
+            // To lookup all tracks, we can use: https://api.discogs.com/masters/355285 <- id of master release. Likewise, releases/id for a non-mastered album
             try
             {
                 var lowerTitle = title.ToLowerInvariant();
